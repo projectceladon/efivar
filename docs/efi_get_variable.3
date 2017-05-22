@@ -1,0 +1,112 @@
+.TH EFI_GET_VARIABLE 3 "Thu Aug 20 2012"
+.SH NAME
+efi_variables_supported, efi_del_variable, efi_get_variable,
+efi_get_variable_attributes, efi_get_variable_size, efi_set_variable \-
+manipulate UEFI variables
+.SH SYNOPSIS
+.nf
+.B #include <efivar.h>
+.sp
+\fBint efi_variables_supported(void);\fR
+\fBint efi_del_variable(efi_guid_t\fR \fIguid\fR\fB, const char\fR \fI*name\fR\fB);\fR
+
+\fBint efi_get_variable(efi_guid_t\fR \fIguid\fR\fB, const char *\fR\fIname\fR\fB,
+				 void **\fR\fIdata\fR\fB, ssize_t *\fR\fIdata_size\fR\fB,
+				 uint32_t *\fR\fIattributes\fR\fB);\fR
+
+\fBint efi_get_variable_attributes(efi_guid_t \fR\fIguid\fR\fB, const char *\fR\fIname\fR\fB,
+						  uint32_t *\fR\fIattributes\fR\fB);\fR
+
+\fBint efi_get_variable_size(efi_guid_t \fR\fIguid\fR\fB, const char *\fR\fIname\fR\fB,
+					 size_t *\fR\fIsize\fR\fB);\fR
+
+\fBint efi_append_variable(efi_guid_t \fR\fIguid\fR\fB, const char *\fR\fIname\fR\fB,
+				 void *\fR\fIdata\fR\fB, size_t \fR\fIdata_size\fR\fB,
+				 uint32_t \fR\fIattributes\fR\fB);\fR
+
+\fBint efi_set_variable(efi_guid_t \fR\fIguid\fR\fB, const char *\fR\fIname\fR\fB,
+				 void *\fR\fIdata\fR\fB, size_t \fR\fIdata_size\fR\fB,
+				 uint32_t \fR\fIattributes\fR\fB);\fR
+
+\fBint efi_set_variable(efi_guid_t \fR\fIguid\fR\fB, const char *\fR\fIname\fR\fB,
+				 void *\fR\fIdata\fR\fB, size_t \fR\fIdata_size\fR\fB,
+				 uint32_t \fR\fIattributes\fR\fB, mode_t \fR\fImode\fR\fB);\fR
+
+\fBint efi_get_next_variable_name(efi_guid_t **\fR\fIguid\fR\fB, char **\fR\fIname\fR\fB);\fR
+
+\fBint efi_str_to_guid(const char *\fR\fIs\fR\fB, efi_guid_t *\fR\fIguid\fR\fB);\fR
+
+\fBint efi_guid_to_str(const efi_guid_t *\fR\fIguid\fR\fB, char **\fR\fIsp\fR\fB);\fR
+
+\fBint efi_name_to_guid(const char *\fR\fIname\fR\fB, efi_guid_t *\fR\fIguid\fR\fB);\fR
+
+\fBint efi_id_guid_to_guid(const char *\fR\fIid_guid\fR\fB, efi_guid_t *\fR\fIguid\fR\fB);\fR
+
+\fBint efi_guid_to_name(efi_guid_t *\fR\fIguid\fR\fB, char **\fR\fIname\fR\fB);\fR
+
+\fBint efi_guid_to_id_guid(efi_guid_t *\fR\fIguid\fR\fB, char **\fR\fIid_guid\fR\fB);\fR
+
+\fBint efi_guid_to_symbol(efi_guid_t *\fR\fIguid\fR\fB, char **\fR\fIsymbol\fR\fB);\fR
+\fBint efi_symbol_to_guid(const char *\fR\fIsymbol\fR\fB, efi_guid_t *\fR\fIguid\fR\fB);\fR
+.fi
+.SH DESCRIPTION
+.BR efi_variables_supported ()
+tests if the UEFI variable facility is supported on the current machine.
+.PP
+.BR efi_del_variable ()
+deletes the variable specified by \fIguid\fR and \fIname\fR.
+.PP
+.BR efi_get_variable ()
+gets the variable specified by \fIguid\fR and \fIname\fR. The value is stored in \fIdata\fR, its size in \fIdata_size\fR, and its attributes are stored in \fIattributes\fR.
+.PP
+.BR efi_get_variable_attributes ()
+gets attributes for the variable specified by \fIguid\fR and \fIname\fR.
+.PP
+.BR efi_get_variable_size ()
+gets the size of the data for the variable specified by \fIguid\fR and \fIname\fR.
+.PP
+.BR efi_append_variable ()
+appends \fIdata\fR of size \fIsize\fR to the variable specified by \fIguid\fR and \fIname\fR.
+.PP
+.BR efi_set_variable ()
+sets the variable specified by \fIguid\fR and \fIname\fR.  If the optional \fImode\fR parameter is given, it will use those permissions to create the file, subject to umask.
+.PP
+.BR efi_get_next_variable_name ()
+iterates across the currently extant variables, passing back a guid and name.
+.PP
+.BR efi_str_to_guid ()
+parses a UEFI GUID from string form to an efi_guid_t the caller provides
+.PP
+.BR efi_guid_to_str ()
+Creates a string representation of a UEFI GUID.  If sp is NULL, it returns how big the string would be.  If sp is not NULL but *sp is NULL, it allocates a string and returns it with.  It is the caller's responsibility to free this string.  If sp is not NULL and *sp is not NULL, \fBefi_guid_to_str\fR() assumes there is an allocation of suitable size and uses it.
+.PP
+.BR efi_name_to_guid ()
+translates from a well known name to an efi_guid_t the caller provides.
+.PP
+.BR efi_guid_to_name ()
+translates from an efi_guid_t to a well known name.  If the supplied GUID does not have a well known name, this function is equivalent to \fBefi_guid_to_str\fR().
+.PP
+.BR efi_guid_to_id_guid ()
+translates from an efi_guid_t to an {ID GUID}.  If the supplied GUID has a well known name, the {ID GUID} will be of the form "{name_here}".  If not, it will be of the form "{66b2af1c-6211-4082-95cb-9f73a4795a7e}".
+.PP
+.BR efi_id_guid_to_guid ()
+translates from an {ID GUID} to an efi_guid_t the caller provides.
+.PP
+.BR efi_guid_to_symbol ()
+translates from an efi_guid_t to a unique (within libefivar) C-sytle symbol name.  These symbol names are useful for printing as a unique, easily parsed identifier, and are also provide by the library and its header files.
+.PP
+.BR efi_symbol_to_guid ()
+translates from a libefivar efi_guid_$FOO symbol name to an efi_guid_t the caller provides.
+.PP
+.SH "RETURN VALUE"
+\fBefi_variables_supported\fR() returns true if variables are supported on the running hardware, and false if they are not.
+.PP
+\fBefi_get_next_variable_name\fR() returns 0 when iteration has completed, 1 when iteration has not completed, and -1 on error.  In the event of an error,
+.IR errno (3)
+is set appropriately.
+.PP
+\fBefi_del_variable\fR(), \fBefi_get_variable\fR(), \fBefi_get_variable_attributes\fR(), \fBefi_get_variable_size\fR(), \fBefi_append_variable\fR(), \fBefi_set_variable\fR(), \fBefi_str_to_guid\fR(), \fBefi_guid_to_str\fR(), \fBefi_name_to_guid\fR(), and \fBefi_guid_to_name\fR() return negative on error and zero on success.
+.SH AUTHORS
+.nf
+Peter Jones <pjones@redhat.com>
+.fi
