@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 libefivar_include_dirs := $(LOCAL_PATH)/include/efivar $(LOCAL_PATH)/generated
-SHARED_C_INCLUDES := $(ANDROID_BUILD_TOP)/external/oprofile/libpopt $(libefivar_include_dirs)
+SHARED_C_INCLUDES := $(libefivar_include_dirs)
 
 SHARED_CFLAGS := -std=gnu11 -D__bswap_16=__swap16
 
